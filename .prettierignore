@@ -1,0 +1,7 @@
+# Ignore artifacts:
+build
+coverage
+cdk.out
+dist
+docker
+node_modules
