@@ -1,19 +1,14 @@
 import {
   ApiGatewayV2Client,
   CreateApiCommand,
-  CreateAuthorizerCommand,
   CreateDeploymentCommand,
   CreateIntegrationCommand,
   CreateRouteCommand,
   CreateStageCommand,
   ProtocolType,
 } from '@aws-sdk/client-apigatewayv2';
-import {
-  GetFunctionCommand,
-  LambdaClient,
-  ListFunctionsCommand,
-} from '@aws-sdk/client-lambda';
-import { access, writeFile } from 'fs/promises';
+import { GetFunctionCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { writeFile } from 'fs/promises';
 import path = require('path');
 import { NAMES } from '../const';
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import * as dotenv from 'dotenv';
 import { botSend } from './lambdas/bot-send';
+import { GptWorker } from './lambdas/bot-GptWorker';
 
 dotenv.config();
 
@@ -13,13 +14,14 @@ async function init() {
   console.log('\x1b[32m');
   botLambda();
   botSend();
+  GptWorker();
   api();
 
   try {
     const resp = await axios.post(
       `https://api.telegram.org/bot${TOKEN}/setWebhook`,
       {
-        url: 'https://abbir2xtze.execute-api.eu-west-2.amazonaws.com/prod/message',
+        url: 'https://oe7bsf47aj.execute-api.eu-west-2.amazonaws.com/prod/message',
       }
     );
 

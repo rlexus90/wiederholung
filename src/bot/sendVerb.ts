@@ -18,7 +18,8 @@ export const sendVerb = async (type: IType, msg: Imsg, openai: OpenAI) => {
       lang === 'de'
         ? await openai.chat.completions.create({
             model: 'gpt-5-mini',
-            // temperature: 0.7,
+            // model: 'gpt-4.1',
+            // temperature: 0.5,
             response_format: { type: 'json_object' },
             messages: [
               {

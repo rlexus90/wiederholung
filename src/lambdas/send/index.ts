@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IGptAntwortVerb, IMessage, Imsg, MessageArr } from '../../types';
+import { IMessage, MessageArr } from '../../types';
 
 const token = process.env.TOKEN;
 

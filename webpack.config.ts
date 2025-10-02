@@ -7,6 +7,7 @@ const config = {
   entry: {
     ["bot"]: "./src/lambdas/bot/index.ts",
 		["send"]: "./src/lambdas/send/index.ts",
+		["worker"]: "./src/lambdas/GptWorker/index.ts",
   },
   target: "node",
   output: {

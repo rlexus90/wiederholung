@@ -1,6 +1,7 @@
 export const NAMES = {
   botName: 'GPT-bot-Wiederholung',
   send_fn: 'Send-FN',
+  worker: 'GptWorker',
   api: 'GPT-bot-Wiederholung-api',
   DBname: 'GPT_Bot_Users',
 };

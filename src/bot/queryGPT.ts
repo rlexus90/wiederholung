@@ -5,6 +5,7 @@ import { TEXT } from '../const';
 import { sendVerb } from './sendVerb';
 import { sendNomen } from './sendNomen';
 import { sendAdj } from './sendAdj';
+import { sendMessage } from '../lambdas/GptWorker';
 
 dotenv.config();
 
@@ -45,6 +46,8 @@ export const queryGPT = async (msg: Imsg): Promise<IAntwort> => {
       const parametersObj: IType = JSON.parse(parameters);
       console.log(parametersObj);
 
+      sendMessage(id, parameters);
+
       if (parametersObj.type === 'verb')
         await sendVerb(parametersObj, msg, openai);
       else {
@@ -64,11 +67,7 @@ export const queryGPT = async (msg: Imsg): Promise<IAntwort> => {
 
       return {
         chatId: id,
-        text: parameters,
-      };
-      return {
-        chatId: id,
-        text: 'Erfolgreich',
+        text: 'Запит успішний',
       };
     }
   } catch (e) {
