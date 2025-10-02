@@ -61,12 +61,98 @@ export type IWort = {
 };
 
 export type IMessage = {
-  chat_id: string;
+  chat_id: number;
   text: string;
 };
 
 export type IMessageDelay = {
-  chat_id: string;
+  chat_id: number;
   text: string;
-	delay: number;
+  delay: number;
+};
+export type MessageArr = {
+  message: string[];
+};
+
+export type IType = {
+  lang: 'ukr' | 'de';
+  type: 'verb' | 'nomen' | 'adjektive' | 'andere';
+  query: string;
+};
+
+export type IGptAntwortVerb = {
+  str: string;
+  example1: { str: string; transl: string };
+  example2: { str: string; transl: string };
+  example3: { str: string; transl: string };
+  example4: { str: string; transl: string };
+  Präteritum: {
+    example: string;
+    translate: string;
+  };
+  Perfekt: {
+    example: string;
+    translate: string;
+  };
+  PartizipII: {
+    example: string;
+    translate: string;
+  };
+  KonjunktivII: {
+    example: string;
+    translate: string;
+  };
+};
+
+export type IVerb = {
+  verb: string;
+  translation: string;
+  forms: {
+    Infinitiv: string;
+    Präsens_3s: string;
+    Präteritum: string;
+    Partizip_II: string;
+  };
+  examples: IExample[];
+
+  prepositions: IExample[];
+  collocations: IExample[];
+
+  synonyms: IExample[];
+  antonyms: IExample[];
+  personal_examples: IExample[];
+};
+
+export type IExample = {
+  str: string;
+  transl: string;
+};
+
+export type INomen = {
+  nomen: string;
+  translation: string;
+  plural: string;
+  examples: IExample[];
+  collocations: IExample[];
+  synonyms: IExample[];
+  antonyms: IExample[];
+  word_family: IExample[];
+  personal_examples: IExample[];
+};
+export type IUsage = {
+  type: string;
+  example: string;
+};
+
+export type IAdj = {
+  adjective: string;
+  translation: string;
+  comparative: string;
+  superlative: string;
+  examples: IExample[];
+  collocations: IExample[];
+  synonyms: IExample[];
+  antonyms: IExample[];
+  usage_types: IUsage[];
+  personal_examples: IExample[];
 };

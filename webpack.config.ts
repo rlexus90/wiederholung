@@ -6,7 +6,7 @@ import ZipPlugin = require("zip-webpack-plugin")
 const config = {
   entry: {
     ["bot"]: "./src/lambdas/bot/index.ts",
-		["send-bot"]: "./src/lambdas/send/index.ts",
+		["send"]: "./src/lambdas/send/index.ts",
   },
   target: "node",
   output: {

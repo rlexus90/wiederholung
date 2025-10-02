@@ -21,7 +21,7 @@ const GPT_KEY = process.env.GPT_KEY || '';
 export const botSend = async () => {
   const client = new LambdaClient({});
   const code = await readFile(
-    path.resolve(__dirname, '../../dist', 'send-bot.zip')
+    path.resolve(__dirname, '../../dist', 'send.zip')
   );
   const ZipFile = new Uint8Array(code);
 
@@ -32,7 +32,7 @@ export const botSend = async () => {
     FunctionName,
     Role: 'arn:aws:iam::540415712502:role/Lambda_basic',
     Architectures: [Architecture.arm64],
-    Handler: 'bot/index.handler',
+    Handler: 'send/index.handler',
     PackageType: PackageType.Zip,
     Runtime: Runtime.nodejs20x,
     Environment: {
@@ -48,11 +48,11 @@ export const botSend = async () => {
 
   try {
     await client.send(update);
-    console.log('Bot-lambda updated');
+    console.log('Bot-send updated');
   } catch {
     try {
       await client.send(create);
-      console.log('Bot-lambda created');
+      console.log('Bot-send created');
     } catch (err) {
       console.log(err);
     }
