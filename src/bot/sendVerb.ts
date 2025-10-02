@@ -17,8 +17,9 @@ export const sendVerb = async (type: IType, msg: Imsg, openai: OpenAI) => {
     const completion =
       lang === 'de'
         ? await openai.chat.completions.create({
-            model: '',
-            temperature: 0.4,
+            model: 'gpt-5-mini',
+            // temperature: 0.7,
+            response_format: { type: 'json_object' },
             messages: [
               {
                 role: 'system',
@@ -35,8 +36,9 @@ export const sendVerb = async (type: IType, msg: Imsg, openai: OpenAI) => {
             ],
           })
         : await openai.chat.completions.create({
-            model: 'gpt-4o-mini-2024-07-18',
-            temperature: 0.4,
+            model: 'gpt-5-mini',
+            // temperature: 0.7,
+            response_format: { type: 'json_object' },
             messages: [
               {
                 role: 'system',
@@ -61,6 +63,8 @@ export const sendVerb = async (type: IType, msg: Imsg, openai: OpenAI) => {
     const antwort: IVerb = JSON.parse(antwortGPT);
 
     console.log(antwort);
+    console.log(completion.usage);
+    console.log('Response complette');
 
     await Promise.all([
       await sendWithDelay({
