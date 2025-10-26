@@ -1,6 +1,6 @@
 import { IExample, Imsg, INomen, IType, MessageArr } from '../types';
 import OpenAI from 'openai';
-import { TEXT } from '../const';
+import { schedule, TEXT } from '../const';
 import { sendWithDelay } from './sendWithDellay';
 
 export const sendNomen = async (type: IType, msg: Imsg, openai: OpenAI) => {
@@ -66,12 +66,37 @@ export const sendNomen = async (type: IType, msg: Imsg, openai: OpenAI) => {
       await sendWithDelay({
         chat_id: id,
         text: JSON.stringify(directMSG(antwort)),
-        delay: 0,
+        delay: schedule.get(1) || 0,
+      }),
+      await sendWithDelay({
+        chat_id: id,
+        text: JSON.stringify(directMSG(antwort)),
+        delay: schedule.get(2) || 0,
+      }),
+      await sendWithDelay({
+        chat_id: id,
+        text: JSON.stringify(directMSG(antwort)),
+        delay: schedule.get(3) || 0,
+      }),
+      await sendWithDelay({
+        chat_id: id,
+        text: JSON.stringify(directMSG(antwort)),
+        delay: schedule.get(4) || 0,
+      }),
+      await sendWithDelay({
+        chat_id: id,
+        text: JSON.stringify(directMSG(antwort)),
+        delay: schedule.get(5) || 0,
       }),
       await sendWithDelay({
         chat_id: id,
         text: JSON.stringify(reverseMSG(antwort)),
-        delay: 60,
+        delay: schedule.get(6) || 0,
+      }),
+      await sendWithDelay({
+        chat_id: id,
+        text: JSON.stringify(directMSG(antwort)),
+        delay: schedule.get(7) || 0,
       }),
     ]);
   } catch (e) {

@@ -26,6 +26,76 @@ export const reply_markup = {
   ],
 };
 
+export const languageLevel = new Map<number, string>([
+  [0, 'A1'],
+  [1, 'A2'],
+  [2, 'B1'],
+  [3, 'B2'],
+  [4, 'C1'],
+  [5, 'C2'],
+]);
+
+export const schedule = new Map<number, number>([
+  [1, 0],
+  [2, 3],
+  [3, 24], // день
+  [4, 72], // 3 дні
+  [5, 168], // тиждень
+  [6, 336], // 2 тижні
+  [7, 504], // 3 тижні
+]);
+
+export const intonation = new Map<number, string>([
+  [
+    0,
+    'Sprich natürlich und flüssig, wie in einer echten Unterhaltung. Verwende normale Sprechgeschwindigkeit und natürliche Pausen. Betonung auf wichtigen Wörtern, lebendige Intonation.',
+  ],
+  [
+    1,
+    `Sprich natürlich und flüssig, wie in einer echten Unterhaltung. Verwende normale Sprechgeschwindigkeit und natürliche Pausen. Betonung auf wichtigen Wörtern, lebendige Intonation`,
+  ],
+  [
+    2,
+    `Sprich lebendig, emotional und variabel in Tonhöhe und Lautstärke, wie in einem echten Gespräch. Nutze Redefluss und natürliche Betonung.`,
+  ],
+  [
+    3,
+    `Sprich, als würdest du mit einem Kollegen oder Freund sprechen. Variiere Tempo, Tonhöhe und Lautstärke, mit realistischen Pausen und Sprachmelodie.`,
+  ],
+  [
+    4,
+    `Sprich mit natürlicher, melodiöser Intonation, variierender Geschwindigkeit und Betonung, wie im Alltag. Nicht überdeutlich oder lehrbuchmäßig.`,
+  ],
+  [
+    5,
+    `Sprich flüssig und schnell, wie in echtem Alltag. Verwende natürliche Pausen, aber keine Vereinfachung. Betonung auf wichtigen Wörtern.`,
+  ],
+  [
+    6,
+    `Sprich enthusiastisch, mit betonter Intonation und lebendiger Stimme. Variiere Tonhöhe für realistischen Effekt.`,
+  ],
+  [
+    7,
+    `Füge kurze Pausen ein, aber sprich ansonsten flüssig und realistisch. Kein vereinfachtes Sprechen, echte Konversationstonalität.`,
+  ],
+  [
+    8,
+    `Sprich locker, wie im Alltag. Natürliche Geschwindigkeit, leichte Betonung und lebendige Intonation.`,
+  ],
+  [
+    9,
+    `Sprich mit fester Stimme, betonte Wörter, klare Struktur, realistische Geschwindigkeit.`,
+  ],
+  [
+    10,
+    `Variiere Tonhöhe und Lautstärke innerhalb eines Satzes, wie in echtem Gespräch. Lebendig und dynamisch.`,
+  ],
+  [
+    11,
+    `Variiere Tonhöhe und Lautstärke innerhalb eines Satzes, wie in echtem Gespräch. Lebendig und dynamisch.`,
+  ],
+]);
+
 export const TEXT = {
   NO_ACCESS: 'У вас не має доступу, почекайте поки вам нададуть доступ',
   NO_ACCESS_ACTION: 'У вас не має доступу для виконання ціеї операції',

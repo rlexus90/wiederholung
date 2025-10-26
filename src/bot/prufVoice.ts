@@ -75,7 +75,6 @@ export const prufVoice = async (msg: Imsg): Promise<IAntwort> => {
   };
 };
 
-
 const downloadFile = async (url: string) => {
   return new Promise<void>((res) => {
     const voice = createWriteStream(inputFilePath);

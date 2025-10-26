@@ -1,7 +1,7 @@
 import { IAntwort, IExpression, Imsg } from '../types';
 import OpenAI from 'openai';
 import * as dotenv from 'dotenv';
-import { TEXT } from '../const';
+import { schedule, TEXT } from '../const';
 import { formatText } from './sendVerb';
 
 import { getExpressionList, saveExpression } from './DbHelper';
@@ -50,7 +50,7 @@ export const expression = async (msg: Imsg): Promise<IAntwort> => {
       message: [
         `${formatText(antwortObj.expression)}
 *Пояснення DE:* ${formatText(antwortObj.meaning_de)}
-*Пояснення UA* ${formatText(antwortObj.meaning_de)}`,
+*Пояснення UA* ${formatText(antwortObj.meaning_ua)}`,
         `*Порада* ${formatText(antwortObj.tip)}`,
         ...antwortObj.examples.map(
           (example) => `${formatText(example.sentence)}
@@ -63,12 +63,37 @@ _${formatText(example.translation)}_`
       await sendWithDelay({
         chat_id: id,
         text: JSON.stringify(MsgArr),
-        delay: 0,
+        delay: schedule.get(1) || 0,
       }),
       await sendWithDelay({
         chat_id: id,
         text: JSON.stringify(MsgArr),
-        delay: 60,
+        delay: schedule.get(2) || 0,
+      }),
+      await sendWithDelay({
+        chat_id: id,
+        text: JSON.stringify(MsgArr),
+        delay: schedule.get(3) || 0,
+      }),
+      await sendWithDelay({
+        chat_id: id,
+        text: JSON.stringify(MsgArr),
+        delay: schedule.get(4) || 0,
+      }),
+      await sendWithDelay({
+        chat_id: id,
+        text: JSON.stringify(MsgArr),
+        delay: schedule.get(5) || 0,
+      }),
+      await sendWithDelay({
+        chat_id: id,
+        text: JSON.stringify(MsgArr),
+        delay: schedule.get(6) || 0,
+      }),
+      await sendWithDelay({
+        chat_id: id,
+        text: JSON.stringify(MsgArr),
+        delay: schedule.get(7) || 0,
       }),
     ]);
 

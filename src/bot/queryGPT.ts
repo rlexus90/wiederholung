@@ -2,10 +2,10 @@ import { IAntwort, Imsg, IType } from '../types';
 import OpenAI from 'openai';
 import * as dotenv from 'dotenv';
 import { BOT_OPTIONS, TEXT } from '../const';
-import { sendVerb } from './sendVerb';
+import { formatText, sendVerb } from './sendVerb';
 import { sendNomen } from './sendNomen';
 import { sendAdj } from './sendAdj';
-import { formatTextToV2, sendMessage } from './sendMessage';
+import { sendMessage } from './sendMessage';
 
 dotenv.config();
 
@@ -23,25 +23,6 @@ export const queryGPT = async (msg: Imsg): Promise<IAntwort> => {
 
   try {
     if (text.split(' ').length > 1) {
-      // const completion = await openai.chat.completions.create({
-      //   model: 'gpt-4o-mini-2024-07-18',
-      //   temperature: 0.3,
-      //   messages: [
-      //     { role: 'system', content: TEXT.SYSTEM_QUERY },
-      //     { role: 'system', content: TEXT.QUERY_SATZ },
-      //     {
-      //       role: 'user',
-      //       content: `${text}`,
-      //     },
-      //   ],
-      // });
-      // const antwort = completion.choices[0].message.content as string;
-      // console.log(completion.choices[0].message.content);
-      // return {
-      //   chatId: id,
-      //   text: `${antwort}`,
-      // };
-
       return {
         chatId: id,
         text: 'Поки працюю лише з одним словом',
@@ -51,7 +32,7 @@ export const queryGPT = async (msg: Imsg): Promise<IAntwort> => {
       const parametersObj: IType = JSON.parse(parameters);
       console.log(parametersObj);
 
-      sendMessage(id, formatTextToV2(parameters), BOT_OPTIONS);
+      sendMessage(id, formatText(parameters), BOT_OPTIONS);
 
       if (parametersObj.type === 'verb')
         await sendVerb(parametersObj, msg, openai);
@@ -82,11 +63,6 @@ export const queryGPT = async (msg: Imsg): Promise<IAntwort> => {
       text: TEXT.ERROR,
     };
   }
-
-  return {
-    chatId: id,
-    text: TEXT.ERROR,
-  };
 };
 
 const returnResult = async (msg: string) => {

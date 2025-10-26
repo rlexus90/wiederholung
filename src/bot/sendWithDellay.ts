@@ -3,8 +3,7 @@ import {
   SchedulerClient,
   CreateScheduleCommand,
 } from '@aws-sdk/client-scheduler';
-import { sendMessage } from './sendMessage';
-import { BOT_OPTIONS } from '../const';
+
 import { v4 as uuidv4 } from 'uuid';
 
 const client = new SchedulerClient();
@@ -12,7 +11,15 @@ const client = new SchedulerClient();
 export const sendWithDelay = async (param: IMessageDelay) => {
   const { chat_id, text, delay } = param;
 
-  const runAt = new Date(Date.now() + delay * 1000).toISOString().split('.')[0];
+  const checkDate = new Date(Date.now() + delay * 1000 * 60 * 60);
+  const hours = checkDate.getHours();
+
+  const date =
+    hours >= 22
+      ? new Date(Date.now() + (delay + 14) * 1000 * 60 * 60)
+      : checkDate;
+
+  const runAt = date.toISOString().split('.')[0];
 
   const scheduleName = `delayed-task-${uuidv4()}`;
 
@@ -32,12 +39,4 @@ export const sendWithDelay = async (param: IMessageDelay) => {
   });
 
   await client.send(command);
-
-  // 	const antwort: MessageArr = JSON.parse(text);
-
-  //  for (const [index, str] of antwort.message.entries()) {
-  // 			await sendMessage(chat_id, str, {
-  // 				...BOT_OPTIONS,
-  // 				disable_notification: Boolean(index),
-  // 			});}
 };

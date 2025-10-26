@@ -1,10 +1,17 @@
-import { BOT_OPTIONS, reply_markup, TEXT } from '../const';
-import { Imsg, IAntwort, languageLevel, IStats, IQuits } from '../types';
+import {
+  BOT_OPTIONS,
+  intonation,
+  languageLevel,
+  reply_markup,
+  TEXT,
+} from '../const';
+import { Imsg, IStats, IQuits } from '../types';
 import { getQuits, getStats, saveQuits } from './DbHelper';
 import OpenAI from 'openai';
 import * as dotenv from 'dotenv';
-import { sendMessage } from './sendMessage';
+import { sendMessage, sendVoice } from './sendMessage';
 import { formatText } from './sendVerb';
+import { writeFileSync } from 'node:fs';
 
 dotenv.config();
 
@@ -25,19 +32,26 @@ export const quits = async (msg: Imsg) => {
     const quits: IQuits = await getQuits(id);
 
     const query = `
-Ти — професійний викладач німецької мови, який допомагає україномовним учням тренувати розуміння німецької мови.
+Ти — професійний викладач німецької мови для україномовних учнів, який тренує розуміння німецької мови на слух і читання.
 
-1. Згенеруй німецьку фразу (2–4 речення) рівня мови ${languageLevel.get(stats.level)}, та її переклад. 
-Фраза має бути природною, побутовою або типовою для реального спілкування.
+1. Згенеруй **німецьку фразу (2–4 речення)** рівня мови ${languageLevel.get(stats.level)} та її **точний переклад українською**. 
+   Фраза має бути **природною, побутовою або типовою для реального спілкування**, може включати **складну лексику або специфіку робочого середовища**. 
+   Фраза повинна бути **живою і реалістичною**, як у реальному мовленні.
 
-2. Створи 4 варіанти коротких пояснень українською мовою, про що йдеться у фразі:
-- один варіант повинен бути повністю вірним,
-- три інші мають бути логічно схожими, але невірними (не занадто очевидно помилковими).
+2. Створи **4 варіанти коротких пояснень українською**, що описують зміст фрази:
+   - **1 варіант повністю вірний**,
+   - **3 інші логічно схожі, але невірні**, не надто очевидні, щоб користувач мав вибір.
+   
+3. Якщо користувач передав масив попередніх фраз (${quits.phrase}), **не використовуй їх повторно**.
 
-3. Відповідь має бути строго у форматі JSON:
+4. **Перемішай порядок варіантів випадковим чином**. 
+Правильний варіант не повинен частіше потрапляти на перше місце ніж на інші. 
+Укажи **номер правильного варіанту** після перемішування (число від 1 до 4).
+
+5. **Відповідь повинна бути строго у форматі JSON**:
 {
   "phrase": "згенерована німецька фраза",
-	"translate": "переклад фрази украінською",
+  "translate": "переклад фрази українською",
   "variant1": "українське пояснення варіанту 1",
   "variant2": "українське пояснення варіанту 2",
   "variant3": "українське пояснення варіанту 3",
@@ -45,14 +59,8 @@ export const quits = async (msg: Imsg) => {
   "trueAntwort": "номер вірного варіанту (число)"
 }
 
-4. Якщо користувач передав масив попередніх фраз (${quits.phrase}), **не використовуй їх повторно**.
-
-5. Перед формуванням остаточної відповіді перемішай порядок варіантів випадковим чином, щоб правильна відповідь
- рідко була першою.
-
- 6. Укажи номер правильного варіанту після перемішування (число від 1 до 4).
-
-Не додавай ніяких коментарів, лише JSON.
+6. **Не додавай ніяких коментарів або тексту поза JSON**.
+7. Став акцент на **реалістичність та складність для розуміння**, щоб фраза була корисною для тренування слуху та читання.
 	`;
 
     const completion = await openai.chat.completions.create({
@@ -73,7 +81,9 @@ export const quits = async (msg: Imsg) => {
 
     await saveQuits(antwortObj, id);
 
-    await sendMessage(id, antwortObj.phrase);
+    await voiceGenerate(antwortObj.phrase, id);
+
+    // await sendMessage(id, antwortObj.phrase);
     await sendMessage(id, antwortObj.variant1);
     await sendMessage(id, antwortObj.variant2);
     await sendMessage(id, antwortObj.variant3);
@@ -89,5 +99,33 @@ export const quits = async (msg: Imsg) => {
       chatId: id,
       text: TEXT.ERROR,
     };
+  }
+};
+
+export const voiceGenerate = async (str: string, id: number) => {
+  const filePath = '/tmp/speech.ogg';
+
+  const variant = Math.round(Math.random() * 11);
+
+  try {
+    const ttsResponse = await openai.audio.speech.create({
+      model: 'gpt-4o-mini-tts',
+      voice: 'shimmer', // alloy
+      input: str,
+      response_format: 'opus',
+      instructions: intonation.get(variant),
+    });
+
+    const buffer = Buffer.from(await ttsResponse.arrayBuffer());
+
+    writeFileSync(filePath, new Uint8Array(buffer));
+
+    const formData = new FormData();
+    formData.append('chat_id', id + '');
+    formData.append('voice', new Blob([buffer]), 'speech.ogg');
+
+    await sendVoice(formData);
+  } catch (e) {
+    console.log(e);
   }
 };

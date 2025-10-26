@@ -1,5 +1,5 @@
-import { BOT_OPTIONS } from '../const';
-import { IAntwort, ICallback, IQuits, IStats, languageLevel } from '../types';
+import { BOT_OPTIONS, languageLevel } from '../const';
+import { IAntwort, ICallback, IQuits, IStats } from '../types';
 import { getStats, getQuits, saveStats } from './DbHelper';
 import { sendMessage } from './sendMessage';
 import { formatText } from './sendVerb';

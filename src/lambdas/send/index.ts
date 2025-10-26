@@ -25,15 +25,6 @@ export const handler = async (input: IMessage) => {
         ...BOT_OPTIONS,
         disable_notification: Boolean(index),
       });
-      // await axios.post(
-      //   'https://api.telegram.org/bot' + token + '/sendMessage',
-      //   {
-      //     chat_id,
-      //     text: str,
-      //     parse_mode,
-      //     disable_notification: Boolean(index),
-      //   }
-      // );
     }
   } catch (e) {
     console.log('Error when message processed');
