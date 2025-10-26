@@ -84,7 +84,7 @@ export const sendVerb = async (type: IType, msg: Imsg, openai: OpenAI) => {
   }
 };
 
-const formatText = (text: string) => {
+export const formatText = (text: string) => {
   return text.replace(/([_*[\]()~`>#+\-=|{}.!\\])/g, '\\$1');
 };
 

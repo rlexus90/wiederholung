@@ -3,6 +3,7 @@ import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { NAMES, TEXT } from '../const';
 import { Imsg, IAntwort, User } from '../types';
 import * as dotenv from 'dotenv';
+import { formatText } from './sendVerb';
 
 dotenv.config();
 
@@ -34,7 +35,7 @@ export const listUsers = async (msg: Imsg): Promise<IAntwort> => {
     const text = usersList.join('\n');
     return {
       chatId: id,
-      text,
+      text: formatText(text),
     };
   } catch (e) {
     console.log(e);

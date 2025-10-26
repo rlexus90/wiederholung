@@ -156,3 +156,80 @@ export type IAdj = {
   usage_types: IUsage[];
   personal_examples: IExample[];
 };
+
+export type IDbSave = {
+  id: number;
+  WordArray: string[];
+};
+
+export type IDerDieDas = {
+  word: string;
+  translation: string;
+  part_of_speech: string;
+  example: string;
+  example_translation: string;
+};
+
+export type IDerDieDasAntwort = {
+  words: IDerDieDas[];
+};
+
+export type IMistakeExample = {
+  de: string;
+  ua: string;
+};
+
+export type IMistake = {
+  error_name: string;
+  level: string;
+  category: string;
+  wrong_example: string;
+  correct_example: string;
+  explanation_ua: string;
+  examples: IMistakeExample[];
+  tips: string[];
+};
+
+export type IExpression = {
+  expression: string;
+  meaning_de: string;
+  meaning_ua: string;
+  tip: string;
+  examples: {
+    sentence: string;
+    translation: string;
+  }[];
+};
+
+export type IStats = {
+  level: number;
+  allAntwort: number;
+  nTrueAntwort: number;
+  score: number;
+};
+
+export type IQuits = {
+  phrase: string;
+  translate: string;
+  variant1: string;
+  variant2: string;
+  variant3: string;
+  variant4: string;
+  trueAntwort: number;
+};
+
+export const languageLevel = new Map<number, string>([
+  [0, 'A1'],
+  [1, 'A2'],
+  [2, 'B1'],
+  [3, 'B2'],
+  [4, 'C1'],
+  [5, 'C2'],
+]);
+
+export type ICallback = {
+  from: {
+    id: number;
+  };
+  data: number;
+};

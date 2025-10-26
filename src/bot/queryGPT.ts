@@ -1,11 +1,11 @@
 import { IAntwort, Imsg, IType } from '../types';
 import OpenAI from 'openai';
 import * as dotenv from 'dotenv';
-import { TEXT } from '../const';
+import { BOT_OPTIONS, TEXT } from '../const';
 import { sendVerb } from './sendVerb';
 import { sendNomen } from './sendNomen';
 import { sendAdj } from './sendAdj';
-import { sendMessage } from '../lambdas/GptWorker';
+import { formatTextToV2, sendMessage } from './sendMessage';
 
 dotenv.config();
 
@@ -41,12 +41,17 @@ export const queryGPT = async (msg: Imsg): Promise<IAntwort> => {
       //   chatId: id,
       //   text: `${antwort}`,
       // };
+
+      return {
+        chatId: id,
+        text: 'Поки працюю лише з одним словом',
+      };
     } else {
       const parameters = await returnResult(text);
       const parametersObj: IType = JSON.parse(parameters);
       console.log(parametersObj);
 
-      sendMessage(id, parameters);
+      sendMessage(id, formatTextToV2(parameters), BOT_OPTIONS);
 
       if (parametersObj.type === 'verb')
         await sendVerb(parametersObj, msg, openai);

@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { IMessage, MessageArr } from '../../types';
+import { sendMessage } from '../../bot/sendMessage';
+import { BOT_OPTIONS } from '../../const';
 
 const token = process.env.TOKEN;
 
@@ -19,15 +21,19 @@ export const handler = async (input: IMessage) => {
 
   try {
     for (const [index, str] of antwort.message.entries()) {
-      await axios.post(
-        'https://api.telegram.org/bot' + token + '/sendMessage',
-        {
-          chat_id,
-          text: str,
-          parse_mode,
-          disable_notification: Boolean(index),
-        }
-      );
+      await sendMessage(chat_id, str, {
+        ...BOT_OPTIONS,
+        disable_notification: Boolean(index),
+      });
+      // await axios.post(
+      //   'https://api.telegram.org/bot' + token + '/sendMessage',
+      //   {
+      //     chat_id,
+      //     text: str,
+      //     parse_mode,
+      //     disable_notification: Boolean(index),
+      //   }
+      // );
     }
   } catch (e) {
     console.log('Error when message processed');

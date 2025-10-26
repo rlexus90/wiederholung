@@ -1,8 +1,9 @@
-import TelegramBot from 'node-telegram-bot-api';
+import TelegramBot, { SendMessageOptions } from 'node-telegram-bot-api';
 import { msgHandler } from './bot/msgHandler';
 import { Imsg } from './types';
 import * as dotenv from 'dotenv';
 import axios from 'axios';
+import { BOT_OPTIONS } from './const';
 
 dotenv.config();
 
@@ -25,27 +26,30 @@ const bot = new TelegramBot(TEST_TOKEN, { polling: true });
 bot.on('message', async (msg) => {
   console.log(msg);
   try {
-    const { chatId, text, additionalMSG } = await msgHandler(
-      msg as unknown as Imsg
-    );
+    const result = await msgHandler(msg as unknown as Imsg);
 
-    const formatText = text
-      .replace(/\*(.*?)\*/g, '_$1_')
-      .replace(/\_\_(.*?)\_\_/g, '*$1*')
-      .replace(/### (.+)/g, '*$1*');
+    if (!result) return;
+
+    const { chatId, text, additionalMSG } = result;
+
+    const formatText = text.replace(/([_*[\]()~`>#+\-=|{}.!\\])/g, '\\$1');
+    // .replace(/\*(.*?)\*/g, '_$1_')
+    // .replace(/\_\_(.*?)\_\_/g, '*$1*')
+    // .replace(/### (.+)/g, '*$1*');
 
     if (additionalMSG) {
-      const formatText = additionalMSG.text
-        .replace(/\*(.*?)\*/g, '_$1_')
-        .replace(/\_\_(.*?)\_\_/g, '*$1*')
-        .replace(/### (.+)/g, '*$1*');
+      const formatText = additionalMSG.text.replace(
+        /([_*[\]()~`>#+\-=|{}.!\\])/g,
+        '\\$1'
+      );
+      // .replace(/\*(.*?)\*/g, '_$1_')
+      // .replace(/\_\_(.*?)\_\_/g, '*$1*')
+      // .replace(/### (.+)/g, '*$1*');
 
-      bot.sendMessage(additionalMSG.chatId, formatText);
+      // bot.sendMessage(additionalMSG.chatId, formatText,BOT_OPTIONS as unknown as SendMessageOptions);
     }
 
-    bot.sendMessage(chatId, formatText || '', {
-      parse_mode: 'Markdown',
-    });
+    // bot.sendMessage(chatId, formatText || '', BOT_OPTIONS as unknown as SendMessageOptions );
   } catch {
     console.log('Error when message processed');
   }
